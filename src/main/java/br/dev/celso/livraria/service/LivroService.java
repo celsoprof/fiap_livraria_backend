@@ -3,6 +3,7 @@ package br.dev.celso.livraria.service;
 import java.util.List;
 import java.util.Optional;
 
+import br.dev.celso.livraria.service.exception.EntityNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,11 @@ public class LivroService {
 	}
 	
 	public Optional<Livro> findById(Long id) {
-        return repository.findById(id);
+		Optional<Livro> livro = repository.findById(id);
+		if (livro.isEmpty()){
+			throw new EntityNotFound("O livro com id " + id + " não foi encontrado!");
+		}
+        return livro;
 	}
 	
 	public List<Livro> getAll() {
@@ -36,7 +41,7 @@ public class LivroService {
 		if (newLivro.isPresent()){
 			return repository.save(livro);
 		} else {
-			return null;
+			throw new EntityNotFound("O livro com id " + livro.getId() + " não foi encontrado!");
 		}
 	}
 }
