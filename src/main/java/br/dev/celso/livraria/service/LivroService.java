@@ -1,8 +1,11 @@
 package br.dev.celso.livraria.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.dev.celso.livraria.dto.AutorDTO;
+import br.dev.celso.livraria.dto.LivroDTO;
 import br.dev.celso.livraria.service.exception.EntityNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,16 +27,35 @@ public class LivroService {
 		repository.deleteById(id);
 	}
 	
-	public Optional<Livro> findById(Long id) {
+	public Optional<LivroDTO> findById(Long id) {
 		Optional<Livro> livro = repository.findById(id);
+
 		if (livro.isEmpty()){
 			throw new EntityNotFound("O livro com id " + id + " não foi encontrado!");
+		} else {
+			LivroDTO livroDTO = new LivroDTO(livro.get());
+			livroDTO.setAutor(new AutorDTO(livro.get().getAutor()));
+			livroDTO.setCategoria(livro.get().getCategoria().getNome());
+			return Optional.of(livroDTO);
 		}
-        return livro;
+
 	}
 	
-	public List<Livro> getAll() {
-		return repository.findAll();
+	public List<LivroDTO> getAll() {
+		List<Livro> livros = repository.findAll();
+		List<LivroDTO> livrosDTO = new ArrayList<>();
+
+		for (Livro livro : livros){
+			LivroDTO dto = new LivroDTO();
+			dto.setTitulo(livro.getTitulo());
+			dto.setId(livro.getId());
+			// Criar AutorDTO com base no Autor
+			AutorDTO autorDTO = new AutorDTO(livro.getAutor());
+			dto.setAutor(autorDTO);
+			dto.setCategoria(livro.getCategoria().getNome());
+			livrosDTO.add(dto);
+		}
+		return livrosDTO;
 	}
 	
 	public Livro update(Livro livro) {

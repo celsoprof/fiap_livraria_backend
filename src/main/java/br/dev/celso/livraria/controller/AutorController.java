@@ -1,7 +1,9 @@
 package br.dev.celso.livraria.controller;
 
+import br.dev.celso.livraria.dto.AutorDTO;
 import br.dev.celso.livraria.entity.Autor;
 import br.dev.celso.livraria.service.AutorService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,10 @@ public class AutorController {
     private AutorService service;
 
     @PostMapping
-    public ResponseEntity<Autor> create(@RequestBody Autor Autor) {
+    public ResponseEntity<AutorDTO> create(@RequestBody AutorDTO AutorDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(service.create(Autor));
+                .body(service.create(AutorDTO));
     }
 
     @DeleteMapping(value = "/{id}")
@@ -31,11 +33,9 @@ public class AutorController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Autor> getById(@PathVariable Long id){
-        Optional<Autor> Autor = service.findById(id);
-        return Autor.map(value ->
-                ResponseEntity.ok().body(value)).orElseGet(() ->
-                ResponseEntity.notFound().build());
+    public ResponseEntity<AutorDTO> getById(@PathVariable Long id){
+        Optional<AutorDTO> autor = service.findById(id);
+        return ResponseEntity.ok().body(autor.get());
     }
 
     @GetMapping
@@ -44,11 +44,12 @@ public class AutorController {
     }
 
     @PutMapping()
-    public ResponseEntity<Autor> update(@RequestBody Autor Autor){
-        Optional<Autor> AutorOptional = service.findById(Autor.getId());
-
-        if (AutorOptional.isPresent()){
-            return ResponseEntity.ok().body(service.update(Autor));
+    public ResponseEntity<Autor> update(@RequestBody AutorDTO autorDTO){
+        Optional<AutorDTO> autorOptional = service.findById(autorDTO.getId());
+        Autor autor = new Autor();
+        BeanUtils.copyProperties(autorDTO, autor);
+        if (autorOptional.isPresent()){
+            return ResponseEntity.ok().body(service.update(autor));
         } else {
             return ResponseEntity.notFound().build();
         }
