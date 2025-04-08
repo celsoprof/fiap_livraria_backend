@@ -3,7 +3,6 @@ package br.dev.celso.livraria.controller;
 import br.dev.celso.livraria.dto.LivroDTO;
 import br.dev.celso.livraria.entity.Livro;
 import br.dev.celso.livraria.service.LivroService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,26 +31,30 @@ public class LivroController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<LivroDTO> getById(@PathVariable Long id){
-        Optional<LivroDTO> livro = service.findById(id);
+    public ResponseEntity<Livro> getById(@PathVariable Long id){
+        Optional<Livro> livro = service.findById(id);
         return livro.map(value ->
                 ResponseEntity.ok().body(value)).orElseGet(() ->
                 ResponseEntity.notFound().build());
     }
 
+//    @GetMapping(value = "/{id}")
+//    public ResponseEntity<LivroDTO> getById(@PathVariable Long id){
+//        Optional<LivroDTO> livroDTO = service.findByIdd(id);
+//        return ResponseEntity.ok().body(livroDTO.get());
+//    }
+
     @GetMapping
-    public ResponseEntity<List<LivroDTO>> getAll(){
+    public ResponseEntity<List<Livro>> getAll(){
         return ResponseEntity.ok().body(service.getAll());
     }
 
     @PutMapping()
-    public ResponseEntity<LivroDTO> update(@RequestBody LivroDTO livroDTO){
-        Optional<LivroDTO> livroOptional = service.findById(livroDTO.getId());
+    public ResponseEntity<Livro> update(@RequestBody Livro livro){
+        Optional<Livro> livroOptional = service.findById(livro.getId());
         if (livroOptional.isPresent()){
-            Livro livro = new Livro();
-            BeanUtils.copyProperties(livroOptional.get(), livro);
             livro = service.update(livro);
-            return ResponseEntity.ok().body(new LivroDTO(livro));
+            return ResponseEntity.ok().body(livro);
         } else {
             return ResponseEntity.notFound().build();
         }

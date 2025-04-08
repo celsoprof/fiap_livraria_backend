@@ -1,19 +1,15 @@
 package br.dev.celso.livraria.dto;
 
-import br.dev.celso.livraria.entity.Livro;
-import org.springframework.beans.BeanUtils;
-
 public class LivroDTO {
 
-    private Long id;
-    private String titulo;
-    private AutorDTO autor;
-    private String categoria;
-
-    public LivroDTO(Livro livro){
-        BeanUtils.copyProperties(livro, this);
-    }
-    public LivroDTO(){}
+    public Long id;
+    public String isbn;
+    public String titulo;
+    public String editora;
+    public double valorMedio;
+    public String autor;
+    public String categoria;
+    public String descricao;
 
     public Long getId() {
         return id;
@@ -21,6 +17,14 @@ public class LivroDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitulo() {
@@ -31,11 +35,27 @@ public class LivroDTO {
         this.titulo = titulo;
     }
 
-    public AutorDTO getAutor() {
+    public String getEditora() {
+        return editora;
+    }
+
+    public void setEditora(String editora) {
+        this.editora = editora;
+    }
+
+    public double getValorMedio() {
+        return valorMedio;
+    }
+
+    public void setValorMedio(double valorMedio) {
+        this.valorMedio = valorMedio;
+    }
+
+    public String getAutor() {
         return autor;
     }
 
-    public void setAutor(AutorDTO autor) {
+    public void setAutor(String autor) {
         this.autor = autor;
     }
 
@@ -47,4 +67,11 @@ public class LivroDTO {
         this.categoria = categoria;
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 }

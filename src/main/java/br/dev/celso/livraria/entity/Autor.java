@@ -1,5 +1,6 @@
 package br.dev.celso.livraria.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -25,7 +26,7 @@ public class Autor implements Serializable {
     private LocalDate nascimento;
     private LocalDate falecimento;
 
-    @JsonManagedReference
+    @JsonManagedReference("autor")
     @OneToMany(mappedBy = "autor")
     private List<Livro> livros = new ArrayList<>();
 

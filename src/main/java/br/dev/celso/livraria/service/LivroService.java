@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import br.dev.celso.livraria.dto.AutorDTO;
 import br.dev.celso.livraria.dto.LivroDTO;
 import br.dev.celso.livraria.service.exception.EntityNotFound;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,35 +27,39 @@ public class LivroService {
 		repository.deleteById(id);
 	}
 	
-	public Optional<LivroDTO> findById(Long id) {
+	public Optional<Livro> findById(Long id) {
 		Optional<Livro> livro = repository.findById(id);
 
 		if (livro.isEmpty()){
 			throw new EntityNotFound("O livro com id " + id + " não foi encontrado!");
 		} else {
-			LivroDTO livroDTO = new LivroDTO(livro.get());
-			livroDTO.setAutor(new AutorDTO(livro.get().getAutor()));
-			livroDTO.setCategoria(livro.get().getCategoria().getNome());
-			return Optional.of(livroDTO);
+			return livro;
 		}
 
 	}
-	
-	public List<LivroDTO> getAll() {
-		List<Livro> livros = repository.findAll();
-		List<LivroDTO> livrosDTO = new ArrayList<>();
 
-		for (Livro livro : livros){
-			LivroDTO dto = new LivroDTO();
-			dto.setTitulo(livro.getTitulo());
-			dto.setId(livro.getId());
-			// Criar AutorDTO com base no Autor
-			AutorDTO autorDTO = new AutorDTO(livro.getAutor());
-			dto.setAutor(autorDTO);
-			dto.setCategoria(livro.getCategoria().getNome());
-			livrosDTO.add(dto);
+	public Optional<LivroDTO> findByIdd(Long id){
+		Optional<Livro> livro = repository.findById(id);
+		LivroDTO livroDTO = new LivroDTO();
+		if (!livro.isEmpty()){
+			livroDTO.setId(livro.get().getId());
+			livroDTO.setIsbn(livro.get().getIsbn());
+			livroDTO.setTitulo(livro.get().getTitulo());
+			livroDTO.setAutor(livro.get().getAutor().getNome());
+			livroDTO.setEditora(livro.get().getEditora());
+			livroDTO.setValorMedio(livro.get().getValorMedio());
+			livroDTO.setCategoria(livro.get().getCategoria().getNome());
+			livroDTO.setDescricao(livro.get().getDescricao());
+			livroDTO.setValorMedio(livro.get().getValorMedio());
+			return Optional.of(livroDTO);
+		} else {
+			throw new EntityNotFound("O livro com id " + id + " não foi encontrado!");
 		}
-		return livrosDTO;
+	}
+	
+	public List<Livro> getAll() {
+		List<Livro> livros = repository.findAll();
+		return livros;
 	}
 	
 	public Livro update(Livro livro) {

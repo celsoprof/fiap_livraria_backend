@@ -1,9 +1,7 @@
 package br.dev.celso.livraria.controller;
 
-import br.dev.celso.livraria.dto.AutorDTO;
 import br.dev.celso.livraria.entity.Autor;
 import br.dev.celso.livraria.service.AutorService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +18,10 @@ public class AutorController {
     private AutorService service;
 
     @PostMapping
-    public ResponseEntity<AutorDTO> create(@RequestBody AutorDTO AutorDTO) {
+    public ResponseEntity<Autor> create(@RequestBody Autor autor) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(service.create(AutorDTO));
+                .body(service.create(autor));
     }
 
     @DeleteMapping(value = "/{id}")
@@ -33,8 +31,8 @@ public class AutorController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AutorDTO> getById(@PathVariable Long id){
-        Optional<AutorDTO> autor = service.findById(id);
+    public ResponseEntity<Autor> getById(@PathVariable Long id){
+        Optional<Autor> autor = service.findById(id);
         return ResponseEntity.ok().body(autor.get());
     }
 
@@ -44,10 +42,8 @@ public class AutorController {
     }
 
     @PutMapping()
-    public ResponseEntity<Autor> update(@RequestBody AutorDTO autorDTO){
-        Optional<AutorDTO> autorOptional = service.findById(autorDTO.getId());
-        Autor autor = new Autor();
-        BeanUtils.copyProperties(autorDTO, autor);
+    public ResponseEntity<Autor> update(@RequestBody Autor autor){
+        Optional<Autor> autorOptional = service.findById(autor.getId());
         if (autorOptional.isPresent()){
             return ResponseEntity.ok().body(service.update(autor));
         } else {

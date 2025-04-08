@@ -1,5 +1,6 @@
 package br.dev.celso.livraria.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -16,7 +17,7 @@ public class Categoria implements Serializable {
 
     private String nome;
 
-    @JsonManagedReference
+    @JsonManagedReference("categoria")
     @OneToMany(mappedBy = "categoria")
     private List<Livro> livros;
 

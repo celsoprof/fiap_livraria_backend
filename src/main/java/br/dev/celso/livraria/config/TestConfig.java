@@ -58,11 +58,11 @@ public class TestConfig implements CommandLineRunner {
         Categoria c2 = new Categoria(null, "Ficção científica");
         categoriaRepository.saveAll(Arrays.asList(c1, c2));
 
-        Livro l1 = new Livro(null, "O Alquimista", a1, c1);
-        Livro l2 = new Livro(null, "Dom Casmurro", a2, c1);
-        Livro l3 = new Livro(null, "Amor de perdição", a2, c2);
-        Livro l4 = new Livro(null, "Onze Minutos", a1, c2);
-        Livro l5 = new Livro(null, "Maktub", a1, c1);
+        Livro l1 = new Livro(null, "O Alquimista", a1, c1, "O Alquimista é um best-seller do escritor brasileiro Paulo Coelho, publicado originalmente em 1988, em português. Romance alegórico, O Alquimista segue um jovem pastor andaluz em sua viagem ao Egito, depois de ter um sonho recorrente de encontrar tesouro lá.", 99.99);
+        Livro l2 = new Livro(null, "Dom Casmurro", a2, c2, "Dom Casmurro é um romance escrito por Machado de Assis, publicado em 1899 pela Livraria Garnier. Escrito para publicação em livro, o que ocorreu em 1900 – embora com data do ano anterior, ao contrário de Memórias Póstumas de Brás Cubas (1881) e Quincas Borba (1891), escritos antes em folhetins –, é considerado pela crítica o terceiro romance da \"Trilogia Realista\" de Machado de Assis, ao lado desses outros dois, embora o próprio autor não tenha formulado esta categoria", 89.79);
+        Livro l3 = new Livro(null, "Amor de perdição", a2, c1, "Amor de Perdição é uma novela do escritor português Camilo Castelo Branco, escrita em 1861 e publicada em 1862. É considerada a obra principal do escritor, e uma das mais importantes durante a fase do Romantismo em Portugal.", 19.99);
+        Livro l4 = new Livro(null, "Onze Minutos", a1, c2, "Neste \"conto de fadas\" moderno, melancólico e sensual, Paulo Coelho narra a transformação de Maria, uma brasileira que sai de casa ainda jovem determinada a entender o papel do sexo nas relações amorosas e, principalmente, em sua própria vida.", 32.77);
+        Livro l5 = new Livro(null, "Maktub", a1, c1, "Durante um ano, Paulo Coelho teve uma coluna diária chamada Maktub no jornal Folha de S.Paulo. Nela, publicava curtíssimos textos sobre os pensamentos e as inquietações de diversas culturas. Como resultado, o autor recebia diariamente diversas cartas de leitores dizendo o quanto as colunas os inspiravam e que alguns chegavam a recortar o jornal para guardar seus textos preferidos.", 45.00);
         livroRepository.saveAll(Arrays.asList(l1, l2, l3, l4, l5));
 
     }
